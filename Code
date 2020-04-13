@@ -1,0 +1,135 @@
+#include <iostream>
+using namespace std;
+// Build a simple text adventure game in C++
+// Ability to create 3 different types of players (1 class - 3 objects)
+// Each type of player starts with max health, takes damage and heals 
+// Player 1 - max health = 50, damage = 10, heal = 20
+// Player 2 - max health = 75, damage = 25, heal = 10
+// Player 3 - max health = 100, damage = 75, heal = 20
+// Player 4 - max health = 1000, damage = 350, heal = 200
+// A player can be healed to a max health only 
+// When player's health reduces down to zero - game over!
+// Press 1/2/3 - to select which player to spawn 
+// Press D - To take damage 
+// Press H - To heal the player 
+// Repeat D/H till the player is dead
+// On Game Over - Press S to start the game again (spawn new player)
+// On Game Over - Press E to end the program 
+
+// Add your own customisations!! Make it fun!
+class Player{
+  private:
+  int mxLive;
+  int damage;
+  int heals;
+  int currLive;
+
+  public:
+  Player (int mxHp,int dmg,int heal){
+    mxLive=mxHp;
+    damage=dmg;
+    heals=heal;
+    currLive=mxHp;
+    cout<<"New Player..."<<endl;
+    cout<<"Player's Health.."<<mxLive<<endl;
+    cout<<"Damage.."<<damage<<endl;
+    cout<<"Heal.."<<heals<<endl;
+
+  }
+  void TakeDamage(){
+    if(IsAlive()==true){
+      currLive-=damage;
+      cout<<"\nPlayers Current Live is:"<<currLive;
+    }
+    
+      else{
+        cout<<"\n Player is Dead!!";
+    }
+  }
+  void heal(){
+    if(IsAlive()==true)
+     {
+      currLive+=heals;
+     if(currLive > mxLive) {
+        currLive = mxLive;
+      }
+      cout<<"\n Players Current Live is.."<<currLive;}
+  }
+  bool IsAlive(){
+    // if(currLive>0){
+    //   return true;
+    // }
+    // else{
+    //   return false;
+    // }
+  return currLive>0;
+  }
+
+  
+};
+Player newPlayer(int Choice){
+  switch(Choice){
+    case 1:
+   return Player(50, 10, 20);
+    break;
+    case 2:
+   return Player(75, 25, 10);
+    break;
+    case 3:
+   return Player(100, 75, 20);
+    break;
+    case 4:
+    return Player(1000, 350, 200);
+    break;
+    default:
+    cout<<"Wrong Choice! Default Player"<<endl;
+    return Player(50,10,20);
+  }
+}
+
+int main() {
+  bool startGame =true;
+  while(startGame){
+    int Choice;
+    cout<<"Enter Player type:1/2/3/4:-";
+    cin>>Choice;
+    Player play=newPlayer(Choice);
+
+    while(play.IsAlive()==true){
+        char action;
+        cout<<"\nChoose Action to be performed on player....\nPress(H==heal)||(D==Damage)";
+        cin>>action;
+
+        if(action == 'H'||action=='h'){
+          play.heal();
+        }
+        else if(action=='D'||action=='d'){
+          play.TakeDamage();
+        }
+        else{
+          cout<<"Wrong Option!!!";
+        }
+    }
+    
+  
+  cout<<"\nPlayer is Dead\n";
+  char New;
+  while(true){
+  cout<<"Start New Game:Press(S)||End the Game:Press(E)";
+  cin>>New;
+  if(New=='S'||New=='s'){
+    cout<<"----------Starting New Game!!!Enjoy.---------";
+    startGame=true;
+    break;
+    
+  }
+  else if(New=='E'||New=='e'){
+    cout<<"Game Over Bois!!!";
+    startGame=false;
+    break;
+  }
+  else 
+  cout<<"Wrong Choice!!";
+  }
+}
+}
